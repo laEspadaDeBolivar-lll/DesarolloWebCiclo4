@@ -1,0 +1,30 @@
+{
+	"name": "animarket",
+	"version": "1.0.0",
+	"description": "Tienda virtual de acesorio para mascotas",
+	"main": "server.js",
+	"type": "module",
+	"scripts": {
+		"start": "node backend/server.js",
+		"dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server.js",
+		"prod": "SET NODE_ENV=PRODUCTION& nodemon backend/server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/laEspadaDeBolivar-lll/DesarolloWebCiclo4.git"
+	},
+	"author": "Espada de Bolivar 3",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"express": "^4.18.1",
+		"mongoose": "^6.6.5"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.20"
+	},
+	"bugs": {
+		"url": "https://github.com/laEspadaDeBolivar-lll/DesarolloWebCiclo4/issues"
+	},
+	"homepage": "https://github.com/laEspadaDeBolivar-lll/DesarolloWebCiclo4#readme"
+}
