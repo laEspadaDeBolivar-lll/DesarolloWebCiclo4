@@ -11,7 +11,7 @@ const productsSchema = mongoose.Schema({
 		type: String,
 		required: [true, 'Por favor, introduzca la descripción del producto'], // requerido y mensaje de error
 	},
-	imagenes: [
+	imagen: [
 		{
 			public_id: {
 				type: String,
@@ -39,16 +39,13 @@ const productsSchema = mongoose.Schema({
 		enum: {
 			// bebidas alcohólicas
 			values: [
-				'Cerveza',
-				'Vino',
-				'Ron',
-				'Tequila',
-				'Vodka',
-				'Whisky',
-				'Brandy',
-				'Cognac',
-				'Champagne',
-				'Otros',
+				'Cervezas',
+				'Cigarrillos',
+				'Energizantes',
+				'Gaseosas',
+                'Pasabocas',
+                'Licores',
+                'Otros'
 			],
 		},
 	},
@@ -61,10 +58,14 @@ const productsSchema = mongoose.Schema({
 		], // maximo de caracteres
 		default: 0,
 	},
-	numOpiniones: {
+	numCalificaciones: {
 		type: Number,
 		default: 0,
 	},
+    calificacion: {
+        type: Number,
+        default: 0,
+    },
 	opiniones: [
 		{
 			nombreCliente: {
