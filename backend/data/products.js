@@ -8,7 +8,7 @@ const products = [
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cervezas/BBC_Sixpack.jpg',
+				url: '/image/Cervezas/BBC_Sixpack.jpg',
 			},
 		],
 		categoria: 'Cervezas',
@@ -26,7 +26,7 @@ const products = [
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cervezas/Poker_Unidad.jpg',
+				url: '/image/Cervezas/Poker_Unidad.jpg',
 			},
 		],
 		categoria: 'Cervezas',
@@ -44,7 +44,7 @@ const products = [
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cigarrillos/Chesfieldblue.jpg',
+				url: '/image/Cigarrillos/Chesfieldblue.jpg',
 			},
 		],
 		categoria: 'Cigarrillos',
@@ -62,7 +62,7 @@ const products = [
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cigarrillos/Marlboro.jpg',
+				url: '/image/Cigarrillos/Marlboro.jpg',
 			},
 		],
 		categoria: 'Cigarrillos',
@@ -80,7 +80,7 @@ const products = [
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Gaseosas/Coca-ColaFamiliar.jpg',
+				url: '/image/Gaseosas/Coca-ColaFamiliar.jpg',
 			},
 		],
 		categoria: 'Gaseosas',
