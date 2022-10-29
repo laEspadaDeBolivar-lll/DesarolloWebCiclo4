@@ -40,9 +40,7 @@ function OrdersList() {
 														<td>2</td>
 														<td>$400</td>
 														<td>
-															<p className="mb-0 text-danger">
-																No Pagado
-															</p>
+															<p className="mb-0 text-danger">No Pagado</p>
 														</td>
 														<td>
 															<Link
@@ -58,9 +56,7 @@ function OrdersList() {
 														<td>2</td>
 														<td>$400</td>
 														<td>
-															<p className="mb-0 text-danger">
-																No Pagado
-															</p>
+															<p className="mb-0 text-danger">No Pagado</p>
 														</td>
 														<td>
 															<Link
@@ -76,9 +72,7 @@ function OrdersList() {
 														<td>2</td>
 														<td>$400</td>
 														<td>
-															<p className="mb-0 text-danger">
-																No Pagado
-															</p>
+															<p className="mb-0 text-danger">No Pagado</p>
 														</td>
 														<td>
 															<Link
@@ -94,9 +88,7 @@ function OrdersList() {
 														<td>2</td>
 														<td>$400</td>
 														<td>
-															<p className="mb-0 text-danger">
-																No Pagado
-															</p>
+															<p className="mb-0 text-danger">No Pagado</p>
 														</td>
 														<td>
 															<Link

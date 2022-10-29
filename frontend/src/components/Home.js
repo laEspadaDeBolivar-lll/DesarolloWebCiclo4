@@ -49,9 +49,7 @@ const Home = () => {
 														<div
 															className="rating-inner"
 															style={{
-																width: `${
-																	(product.calificacion / 5) * 100
-																}%`,
+																width: `${(product.calificacion / 5) * 100}%`,
 															}}></div>
 													</div>
 													<span id="no_of_reviews">
