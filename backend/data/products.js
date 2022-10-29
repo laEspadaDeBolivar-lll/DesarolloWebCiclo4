@@ -44,7 +44,7 @@ const products = [
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cigarrillos/Chesfield blue.jpg',
+				url: 'image/Cigarrillos/Chesfieldblue.jpg',
 			},
 		],
 		categoria: 'Cigarrillos',
@@ -62,7 +62,7 @@ const products = [
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cigarrillos/Malboro.jpg',
+				url: 'image/Cigarrillos/Marlboro.jpg',
 			},
 		],
 		categoria: 'Cigarrillos',
