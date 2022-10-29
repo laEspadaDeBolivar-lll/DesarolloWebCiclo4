@@ -2,13 +2,12 @@ const products = [
 	{
 		nombre: 'BBC Sixpack x 12',
 		precio: '8950',
-		descripcion:
-			'Cerveza BBC Sixpack 355ml x 12',
+		descripcion: 'Cerveza BBC Sixpack 355ml x 12',
 		calificacion: 4.9,
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cervezas/BBC_Sixpack.jpg',
+				url: '/image/Cervezas/BBC_Sixpack.jpg',
 			},
 		],
 		categoria: 'Cervezas',
@@ -20,13 +19,12 @@ const products = [
 	{
 		nombre: 'Poker unidad',
 		precio: '2500',
-		descripcion:
-			'Cerveza Poker por unidad',
+		descripcion: 'Cerveza Poker por unidad',
 		calificacion: 4.9,
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cervezas/Poker_Unidad.jpg',
+				url: '/image/Cervezas/Poker_Unidad.jpg',
 			},
 		],
 		categoria: 'Cervezas',
@@ -38,13 +36,12 @@ const products = [
 	{
 		nombre: 'Cigarrillos Blue',
 		precio: '1800',
-		descripcion:
-			'Cigarrillo Blue x 20',
+		descripcion: 'Cigarrillo Blue x 20',
 		calificacion: 3.5,
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cigarrillos/Chesfield blue.jpg',
+				url: '/image/Cigarrillos/Chesfieldblue.jpg',
 			},
 		],
 		categoria: 'Cigarrillos',
@@ -56,13 +53,12 @@ const products = [
 	{
 		nombre: 'Cigarrillos Malboro',
 		precio: '3000',
-		descripcion:
-			'Cigarrillo Malboro x 20',
+		descripcion: 'Cigarrillo Malboro x 20',
 		calificacion: 4.0,
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Cigarrillos/Malboro.jpg',
+				url: '/image/Cigarrillos/Marlboro.jpg',
 			},
 		],
 		categoria: 'Cigarrillos',
@@ -74,13 +70,12 @@ const products = [
 	{
 		nombre: 'Coca Cola 2L Familiar',
 		precio: '4000',
-		descripcion:
-			'CocaCola 2l Familiar',
+		descripcion: 'CocaCola 2l Familiar',
 		calificacion: 4.0,
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: 'image/Gaseosas/Coca-ColaFamiliar.jpg',
+				url: '/image/Gaseosas/Coca-ColaFamiliar.jpg',
 			},
 		],
 		categoria: 'Gaseosas',
