@@ -75,7 +75,7 @@ const products = [
 		imagen: [
 			{
 				public_id: 'productos/dsvbpny402gelwugv2le',
-				url: '/image/Gaseosas/Coca-ColaFamiliar.jpg',
+				url: '/image/Gaseosas/Coca-ColaFamiliar.jpg', 
 			},
 		],
 		categoria: 'Gaseosas',
