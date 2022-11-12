@@ -1,22 +1,34 @@
-import React, {Fragment, useEffect} from 'react';
+import 'rc-slider/assets/index.css';
+import React, {Fragment, useEffect, useState} from 'react';
 import {useAlert} from 'react-alert';
+import Pagination from 'react-js-pagination';
 import {useDispatch, useSelector} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import {getProducts} from '../actions/productActions';
 import MetaData from './layout/MetaData';
 
 const Home = () => {
-	const {products, loading, error} = useSelector((state) => state.products);
+	const params = useParams();
+	const keyword = params.keyword;
+	const [precio, setPrecio] = useState([100, 1000000]);
+	const [currentPage, setCurrentPage] = useState(1);
 	const alert = useAlert();
+
+	const {products, loading, error, resPerPage, productsCount} = useSelector(
+		(state) => state.products
+	);
 
 	const dispatch = useDispatch();
 	useEffect(() => {
 		if (error) {
 			return alert.error(error);
 		}
-		dispatch(getProducts());
-		alert.success('Ok');
-	}, [dispatch]);
+		dispatch(getProducts(currentPage, keyword, precio));
+	}, [dispatch, alert, error, currentPage, keyword, precio]);
+
+	function setCurrentPageNo(pageNumber) {
+		setCurrentPage(pageNumber);
+	}
 	return (
 		<Fragment>
 			{loading ? (
@@ -27,6 +39,24 @@ const Home = () => {
 					<h1 className="large text-primary">Ultimos productos</h1>
 					<section id="products" className="container mt-5">
 						<div className="row">
+							{/* <Slider
+								range
+								className="t-slider"
+								marks={{
+									100: `$100`,
+									1000000: `$1000000`,
+								}}
+								min={100}
+								max={1000000}
+								defaultValue={[100, 1000000]}
+								tipFormatter={(value) => `$${value}`}
+								tipProps={{
+									placement: 'top',
+									prefixCls: 'rc-slider-tooltip',
+									visible: true,
+								}}
+								value={precio}
+								onChange={(precio) => setPrecio(precio)}></Slider> */}
 							{products &&
 								products.map((product) => (
 									<div
@@ -80,6 +110,20 @@ const Home = () => {
 								))}
 						</div>
 					</section>
+					<div className="d-flex justify-content-center mt-5">
+						<Pagination
+							activePage={currentPage}
+							itemsCountPerPage={resPerPage}
+							totalItemsCount={productsCount}
+							onChange={setCurrentPageNo}
+							nextPageText={'Siguiente'}
+							prevPageText={'Anterior'}
+							firstPageText={'Primera'}
+							lastPageText={'Ultima'}
+							itemClass="page-item"
+							linkClass="page-link"
+						/>
+					</div>
 				</Fragment>
 			)}
 		</Fragment>

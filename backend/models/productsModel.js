@@ -4,8 +4,10 @@ const productsSchema = mongoose.Schema({
 	nombre: {
 		type: String,
 		required: [true, 'Por favor, introduzca el nombre del producto'], // requerido y mensaje de error
-		trim: true, // Elimina espacios en blanco
-		maxLength: [120, 'El nombre del producto no puede superar los 120 caracteres'], // maximo de caracteres
+		maxLength: [
+			120,
+			'El nombre del producto no puede superar los 120 caracteres',
+		], // maximo de caracteres
 	},
 	descripcion: {
 		type: String,
@@ -43,9 +45,9 @@ const productsSchema = mongoose.Schema({
 				'Cigarrillos',
 				'Energizantes',
 				'Gaseosas',
-                'Pasabocas',
-                'Licores',
-                'Otros'
+				'Pasabocas',
+				'Licores',
+				'Otros',
 			],
 		},
 	},
@@ -62,13 +64,18 @@ const productsSchema = mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
-    calificacion: {
-        type: Number,
-        default: 0,
-    },
+	calificacion: {
+		type: Number,
+		default: 0,
+	},
 	opiniones: [
 		{
-			nombreCliente: {
+			user: {
+				type: mongoose.Schema.ObjectId,
+				ref: 'User',
+				required: true,
+			},
+			nombre: {
 				type: String,
 				required: true,
 			},
@@ -82,6 +89,11 @@ const productsSchema = mongoose.Schema({
 			},
 		},
 	],
+	user: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'User',
+		required: true,
+	},
 	fechaCreacion: {
 		type: Date,
 		default: Date.now,

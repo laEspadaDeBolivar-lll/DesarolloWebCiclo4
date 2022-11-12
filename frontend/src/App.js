@@ -10,6 +10,7 @@ import Home from './components/Home';
 import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
 import {ProductDetails} from './components/products/ProductDetails';
+import Login from './components/user/Login';
 function App() {
 	return (
 		<Router>
@@ -18,12 +19,14 @@ function App() {
 				<div className="container container-fluid">
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/cart" element={<Cart />} />
 						<Route path="/product/:id" element={<ProductDetails />} />
+						<Route path="/cart" element={<Cart />} />
 						<Route path="/admin/panel" element={<Dashboard />} />
 						<Route path="/admin/product" element={<NewProduct />} />
 						<Route path="/admin/products" element={<ProductsList />} />
 						<Route path="/admin/orders" element={<OrdersList />} />
+						<Route path="/search/:keyword" element={<Home />} />
+						<Route path="/login" element={<Login />} />
 					</Routes>
 				</div>
 			</div>
