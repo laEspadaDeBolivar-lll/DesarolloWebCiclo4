@@ -4,9 +4,13 @@ import errorMiddleware from './middlewares/errors.js';
 import authRouter from './routes/auths.routes.js';
 import orderRouter from './routes/order.routes.js';
 import productsRouter from './routes/products.routes.js';
+import fileUpload from 'express-fileupload';
+import bodyParser from 'body-parser';
 
 const app = express();
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(fileUpload());
 
 app.use(express.json());
 

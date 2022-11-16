@@ -1,12 +1,15 @@
 import React, {Fragment, useEffect, useState} from 'react';
+import {useAlert} from 'react-alert';
 import {Carousel} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
+import {addItemToCart} from '../../actions/cartActions';
 import {clearErrors, getProductDetails} from '../../actions/productActions';
 import MetaData from '../layout/MetaData';
 
 export const ProductDetails = () => {
-	const {loading, product, error} = useSelector((state) => state.productDetails);
+	const alert = useAlert();
+	const {product, error} = useSelector((state) => state.productDetails);
 	const {id} = useParams();
 	const dispatch = useDispatch();
 	const [quantity, setQuantity] = useState(1);
@@ -35,6 +38,11 @@ export const ProductDetails = () => {
 
 		const qty = contador.valueAsNumber - 1;
 		setQuantity(qty);
+	};
+
+	const addToCart = () => {
+		dispatch(addItemToCart(id, quantity));
+		alert.success('Producto agregado al carro');
 	};
 
 	return (
@@ -87,7 +95,8 @@ export const ProductDetails = () => {
 						type="button"
 						id="cart_btn"
 						className="btn btn-primary d-inline ml-4"
-						disabled={product.stock === 0}>
+						disabled={product.stock === 0}
+						onClick={addToCart}>
 						Añadir al carrito
 					</button>
 					<hr />
@@ -132,9 +141,7 @@ export const ProductDetails = () => {
 								<div className="modal-dialog" role="document">
 									<div className="modal-content">
 										<div className="modal-header">
-											<h5
-												className="modal-title"
-												id="ratingModalLabel">
+											<h5 className="modal-title" id="ratingModalLabel">
 												Deja tu reseña
 											</h5>
 											<button
@@ -187,4 +194,3 @@ export const ProductDetails = () => {
 		</Fragment>
 	);
 };
-
