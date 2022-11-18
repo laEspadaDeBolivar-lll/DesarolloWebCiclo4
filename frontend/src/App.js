@@ -15,6 +15,8 @@ import {Success} from './components/cart/Success';
 import Home from './components/Home';
 import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
+import {ListOrder} from './components/order/ListOrders';
+import {OrderDetails} from './components/order/OrderDetails';
 import {ProductDetails} from './components/products/ProductDetails';
 import {ForgotPassword} from './components/user/ForgotPassword';
 import Login from './components/user/Login';
@@ -42,9 +44,6 @@ function App() {
 						{/* <Route path="/admin/...etc" element={<admin />} /> */}
 						<Route path="/product/:id" element={<ProductDetails />} />
 						<Route path="/cart" element={<Cart />} />
-						<Route path="/admin/product" element={<NewProduct />} />
-						<Route path="/admin/products" element={<ProductsList />} />
-						<Route path="/admin/orders" element={<OrdersList />} />
 						<Route path="/search/:keyword" element={<Home />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
@@ -54,11 +53,36 @@ function App() {
 						<Route path="/password/forgot" element={<ForgotPassword />} />
 						<Route path="/password/reset/:token" element={<NewPassword />} />
 						{/* Ruta protegida para el admin */}
+						<Route path="/admin/orders" element={<OrdersList />} />
 						<Route
 							path="/admin/panel"
 							element={
 								<ProtectedRoute isAdmin={true}>
 									<Dashboard />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/products"
+							element={
+								<ProtectedRoute isAdmin={true}>
+									<ProductsList />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/product"
+							element={
+								<ProtectedRoute isAdmin={true}>
+									<NewProduct />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/orders"
+							element={
+								<ProtectedRoute isAdmin={true}>
+									<OrdersList />
 								</ProtectedRoute>
 							}
 						/>
@@ -99,6 +123,22 @@ function App() {
 							element={
 								<ProtectedRoute>
 									<Success />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/orders/me"
+							element={
+								<ProtectedRoute>
+									<ListOrder />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/order/:id"
+							element={
+								<ProtectedRoute>
+									<OrderDetails />
 								</ProtectedRoute>
 							}
 						/>
