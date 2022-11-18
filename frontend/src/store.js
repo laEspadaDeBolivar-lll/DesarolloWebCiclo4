@@ -2,7 +2,13 @@ import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import {cartReducer} from './reducer/cartReducer';
-import {productDetailsReducer, productsReducer} from './reducer/productReducer';
+import { newOrderReducer } from './reducer/orderReducer';
+import {
+	newProductReducer,
+	prodReducer,
+	productDetailsReducer,
+	productsReducer,
+} from './reducer/productReducer';
 import {
 	authReducer,
 	forgotPasswordReducer,
@@ -22,9 +28,21 @@ const reducer = combineReducers({
 	user: userReducer,
 	forgotPassword: forgotPasswordReducer,
 	cart: cartReducer,
+	newProduct: newProductReducer,
+	product: prodReducer,
+  newOrder: newOrderReducer,
 });
 
-let initialState = {}; // Aqui se puede poner el estado inicial del store
+let initialState = {
+	cart: {
+		cartItems: localStorage.getItem('cartItems')
+			? JSON.parse(localStorage.getItem('cartItems'))
+			: [],
+		shippingInfo: localStorage.getItem('shippingInfo')
+			? JSON.parse(localStorage.getItem('shippingInfo'))
+			: {},
+	},
+}; // Aqui se puede poner el estado inicial del store
 
 const middleware = [thunk];
 const store = createStore(

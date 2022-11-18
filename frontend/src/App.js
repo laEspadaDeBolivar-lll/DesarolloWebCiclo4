@@ -6,7 +6,12 @@ import Dashboard from './components/admin/Dashboard';
 import NewProduct from './components/admin/NewProduct';
 import OrdersList from './components/admin/OrdersList';
 import ProductsList from './components/admin/ProductsList';
+import {UpdateProduct} from './components/admin/UpdateProduct';
 import Cart from './components/cart/Cart';
+import {ConfirmOrder} from './components/cart/ConfirmOrder';
+import {Payment} from './components/cart/Payment';
+import Shipping from './components/cart/Shipping';
+import {Success} from './components/cart/Success';
 import Home from './components/Home';
 import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
@@ -57,7 +62,46 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
-						R
+						<Route
+							path="/admin/updateProduct/:id"
+							element={
+								<ProtectedRoute isAdmin={true}>
+									<UpdateProduct />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/shipping"
+							element={
+								<ProtectedRoute>
+									<Shipping />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/order/confirm"
+							element={
+								<ProtectedRoute>
+									<ConfirmOrder />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/payment"
+							element={
+								<ProtectedRoute>
+									<Payment />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/success"
+							element={
+								<ProtectedRoute>
+									<Success />
+								</ProtectedRoute>
+							}
+						/>
 					</Routes>
 				</div>
 			</div>

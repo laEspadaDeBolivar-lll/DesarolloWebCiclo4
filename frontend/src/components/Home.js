@@ -23,7 +23,7 @@ const Home = () => {
 		if (error) {
 			return alert.error(error);
 		}
-		dispatch(getProducts(currentPage, keyword, precio));
+		dispatch(getProducts(currentPage));
 	}, [dispatch, alert, error, currentPage, keyword, precio]);
 
 	function setCurrentPageNo(pageNumber) {

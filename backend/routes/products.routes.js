@@ -3,6 +3,7 @@ import {
 	createProductReview,
 	deleteProduct,
 	deleteReview,
+	getAdminProducts,
 	getProductById,
 	getProductReviews,
 	getProducts,
@@ -17,6 +18,18 @@ import {
 const router = Router();
 router.get('/products', getProducts); // Obtener todos los productos
 router.get('/product/:id', getProductById); // Obtener un producto por id
+// reviews
+router.put('/review', isAuthenticatedUser, createProductReview);
+router.get('/reviews', isAuthenticatedUser, getProductReviews);
+router.delete('/review', isAuthenticatedUser, deleteReview);
+
+// admin
+router.get(
+	'/admin/products',
+	isAuthenticatedUser,
+	authorizeRoles('admin'),
+	getAdminProducts
+); // Obtener todos los productos admin
 router.post(
 	'/product/new',
 	isAuthenticatedUser,
@@ -35,10 +48,5 @@ router.delete(
 	authorizeRoles('admin'),
 	deleteProduct
 ); // Eliminar producto
-
-// reviews
-router.put('/review', isAuthenticatedUser, createProductReview);
-router.get('/reviews', isAuthenticatedUser, getProductReviews);
-router.delete('/review', isAuthenticatedUser, deleteReview);
 
 export default router;

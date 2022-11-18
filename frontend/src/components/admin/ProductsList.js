@@ -1,95 +1,126 @@
+import {MDBDataTable} from 'mdbreact';
 import React, {Fragment, useEffect} from 'react';
+import {useAlert} from 'react-alert';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {getProducts} from '../../actions/productActions';
+import {
+	clearErrors,
+	deleteProduct,
+	getAdminProducts,
+} from '../../actions/productActions';
 import MetaData from '../layout/MetaData';
 import Sidebar from './Sidebar';
 
 const ProductsList = () => {
+	const alert = useAlert();
+	const dispatch = useDispatch();
 	const {products, loading, error} = useSelector((state) => state.products);
 
-	const dispatch = useDispatch();
+	const deleteProductHandler = (id) => {
+		const response = window.confirm(
+			'¿Está seguro de que desea eliminar este producto?'
+		);
+		if (response) {
+			dispatch(deleteProduct(id));
+			alert.success('Producto eliminado correctamente');
+			window.location.reload(false);
+		}
+	};
 
 	useEffect(() => {
-		dispatch(getProducts());
+		dispatch(getAdminProducts());
+
+		if (error) {
+			alert.error(error);
+			dispatch(clearErrors());
+		}
 	}, [dispatch]);
+
+	const setProducts = () => {
+		const data = {
+			columns: [
+				{
+					label: 'Nombre',
+					field: 'nombre',
+					sort: 'asc',
+				},
+				{
+					label: 'Precio',
+					field: 'precio',
+					sort: 'asc',
+				},
+				{
+					label: 'Inventario',
+					field: 'inventario',
+					sort: 'asc',
+				},
+				{
+					label: 'Vendedor',
+					field: 'vendedor',
+					sort: 'asc',
+				},
+				{
+					label: 'Acciones',
+					field: 'acciones',
+				},
+			],
+			rows: [],
+		};
+		products.forEach((product) => {
+			data.rows.push({
+				nombre: product.nombre,
+				precio: `$${product.precio}`,
+				inventario: product.stock,
+				vendedor: product.vendedor,
+				acciones: (
+					<Fragment>
+						<Link
+							to={`/product/${product._id}`}
+							className="btn btn-primary py-1 px-2">
+							<i className="fa fa-eye"></i>
+						</Link>
+
+						<Link
+							to={`/admin/updateProduct/${product._id}`}
+							className="btn btn-warning py-1 px-2">
+							<i class="fa fa-pencil"></i>
+						</Link>
+
+						<button
+							className="btn btn-danger py-1 px-2 ml-2"
+							onClick={() => deleteProductHandler(product._id)}>
+							<i className="fa fa-trash"></i>
+						</button>
+					</Fragment>
+				),
+			});
+		});
+
+		return data;
+	};
 
 	return (
 		<Fragment>
-			<MetaData title="Lista de Productos"></MetaData>
+			<MetaData title={'Todos los productos'} />
 			<div className="row">
 				<div className="col-12 col-md-2">
 					<Sidebar />
 				</div>
+
 				<div className="col-12 col-md-10">
 					<Fragment>
 						<h1 className="my-5">Todos los productos</h1>
+
 						{loading ? (
-							<i className="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+							<i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
 						) : (
-							<Fragment>
-								<section id="products" className="container mt-5">
-									<div className="row">
-										{products &&
-											products.map((product) => (
-												<div
-													className="col-12 col-sm-6 col-md-4 col-lg-3 my-3"
-													key={product._id}>
-													<div className="card p-3 rounded">
-														<img
-															className="card-img-top mx-auto"
-															src={product.imagen[0].url}
-															alt={product.nombre}
-															style={{
-																height: '150px',
-																width: '150px',
-															}}
-														/>
-														<div className="card-body d-flex flex-column">
-															<h5 className="card-title">
-																<Link
-																	to={`/product/${product._id}`}>
-																	{product.nombre}
-																</Link>
-															</h5>
-															<div className="ratings mt-auto">
-																<div className="rating-outer">
-																	<div
-																		className="rating-inner"
-																		style={{
-																			width: `${
-																				(product.calificacion /
-																					5) *
-																				100
-																			}%`,
-																		}}></div>
-																</div>
-																<span id="no_of_reviews">
-																	({product.numCalificaciones}{' '}
-																	Reviews)
-																</span>
-															</div>
-															<p className="card-text">
-																${product.precio}
-															</p>
-															<Link
-																to={`/admin/product/${product._id}`}
-																id="edit_product"
-																className="btn btn-block btn-primary">
-																Editar
-															</Link>
-															<button
-																id="delete_product"
-																className="btn btn-block btn-danger mt-3">
-																Eliminar
-															</button>
-														</div>
-													</div>
-												</div>
-											))}
-									</div>
-								</section>
-							</Fragment>
+							<MDBDataTable
+								data={setProducts()}
+								className="px-3"
+								bordered
+								striped
+								hover
+							/>
 						)}
 					</Fragment>
 				</div>

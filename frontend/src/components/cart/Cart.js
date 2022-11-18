@@ -1,12 +1,14 @@
 import React, {Fragment} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {addItemToCart, removeItemFromCart} from '../../actions/cartActions';
 import MetaData from '../layout/MetaData';
 
 function Cart() {
+  const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const {cartItems} = useSelector((state) => state.cart);
+  const {user} = useSelector((state) => state.auth);
 
 	const increaseQty = (id, quantity, stock) => {
 		const newQty = quantity + 1;
@@ -21,6 +23,15 @@ function Cart() {
 
 		dispatch(addItemToCart(id, newQty));
 	};
+
+  const checkOutHandler = () => {
+    if (user) {
+      navigate('/shipping');
+    }
+    else {
+      navigate('/login');
+    }
+  }
 
 	const removeCartItemHandler = (id) => {
 		dispatch(removeItemFromCart(id));
@@ -137,7 +148,9 @@ function Cart() {
 								</p>
 
 								<hr />
-								<button id="checkout_btn" className="btn btn-primary btn-block">
+								<button id="checkout_btn" className="btn btn-primary btn-block"
+                onClick={checkOutHandler}
+                >
 									Comprar!
 								</button>
 							</div>
