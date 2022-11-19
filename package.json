@@ -4,6 +4,9 @@
 	"description": "Tienda virtual de acesorio para mascotas",
 	"main": "server.js",
 	"type": "module",
+  "engines": {
+    "node": "16.17.1"
+  },
 	"scripts": {
 		"start": "node backend/server.js",
 		"dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server.js",
@@ -30,6 +33,7 @@
 		"nodemailer": "^6.8.0",
 		"validator": "^13.7.0"
 	},
+
 	"devDependencies": {
 		"nodemon": "^2.0.20"
 	},
