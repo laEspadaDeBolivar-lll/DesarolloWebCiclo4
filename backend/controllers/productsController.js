@@ -119,9 +119,8 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
 				url: result.secure_url,
 			});
 		}
-    req.body.imagen = imagenLink;
+		req.body.imagen = imagenLink;
 	}
-
 
 	product = await productsModel.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
@@ -159,35 +158,40 @@ export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
 // Crear un nuevo review
 export const createProductReview = catchAsyncErrors(async (req, res, next) => {
-	const {rating, comment, productId} = req.body;
-	const review = {
-		user: req.user._id,
-		name: req.user.name,
+	const {rating, comentario, idProducto} = req.body;
+
+	const opinion = {
+		nombreCliente: req.user.nombre,
 		rating: Number(rating),
-		comment,
+		comentario,
 	};
-	const product = await productsModel.findById(productId);
+
+	const product = await productsModel.findById(idProducto);
+
 	const isReviewed = product.opiniones.find(
-		(item) => item.user.toString() === req.user._id.toString()
+		(item) => item.nombreCliente === req.user.nombre
 	);
+
 	if (isReviewed) {
-		product.opiniones.forEach((review) => {
-			if (review.user.toString() === req.user._id.toString()) {
-				review.comment = comment;
-				review.rating = rating;
+		product.opiniones.forEach((opinion) => {
+			if (opinion.nombreCliente === req.user.nombre) {
+				(opinion.comentario = comentario), (opinion.rating = rating);
 			}
 		});
 	} else {
-		product.opiniones.push(review);
-		product.calificacion = product.opiniones.length;
+		product.opiniones.push(opinion);
+		product.numCalificaciones = product.opiniones.length;
 	}
-	product.ratings =
-		product.opiniones.reduce((acc, item) => item.rating + acc, 0) /
+
+	product.calificacion =
+		product.opiniones.reduce((acc, opinion) => opinion.rating + acc, 0) /
 		product.opiniones.length;
+
 	await product.save({validateBeforeSave: false});
+
 	res.status(200).json({
 		success: true,
-		comment: product.opiniones.comment,
+		message: 'Hemos opinado correctamente',
 	});
 });
 

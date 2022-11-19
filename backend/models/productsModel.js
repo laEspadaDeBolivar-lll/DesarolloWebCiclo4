@@ -70,12 +70,7 @@ const productsSchema = mongoose.Schema({
 	},
 	opiniones: [
 		{
-			user: {
-				type: mongoose.Schema.ObjectId,
-				ref: 'User',
-				required: true,
-			},
-			nombre: {
+			nombreCliente: {
 				type: String,
 				required: true,
 			},

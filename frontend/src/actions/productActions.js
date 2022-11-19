@@ -19,6 +19,17 @@ import {
   UPDATE_PRODUCT_FAIL,
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
+  GET_REVIEWS_REQUEST,
+  GET_REVIEWS_SUCCESS,
+  GET_REVIEWS_FAIL,
+  NEW_REVIEW_REQUEST,
+  NEW_REVIEW_SUCCESS,
+  NEW_REVIEW_FAIL,
+  DELETE_REVIEW_REQUEST,
+  DELETE_REVIEW_SUCCESS,
+  DELETE_REVIEW_FAIL,
+  DELETE_REVIEW_RESET,
+  NEW_REVIEW_RESET,
 } from '../constants/productConstants';
 
 // los actions son funciones que se ejecutan en el componente para cambiar el estado del store dependiendo de la accion que se le pase como parametro se entrega algo
@@ -138,6 +149,31 @@ export const updateProduct = (id, productData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+}
+
+// crear un nuevo review
+export const newReview = (reviewData) => async (dispatch) => {
+  try {
+    dispatch({type: NEW_REVIEW_REQUEST});
+
+    const config = {
+      header: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const {data} = await axios.put('/api/review', reviewData, config);
+
+    dispatch({
+      type: NEW_REVIEW_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: NEW_REVIEW_FAIL,
       payload: error.response.data.message,
     });
   }

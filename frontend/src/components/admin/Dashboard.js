@@ -1,9 +1,34 @@
-import React, {Fragment} from 'react';
-import MetaData from '../layout/MetaData';
+import React, {Fragment, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
+import {allOrders} from '../../actions/orderActions';
+import {getAdminProducts} from '../../actions/productActions';
+import { allUsers } from '../../actions/userActions';
+import MetaData from '../layout/MetaData';
 import Sidebar from './Sidebar';
 
 function Dashboard() {
+	const dispatch = useDispatch();
+
+	const {products} = useSelector((state) => state.products);
+	const {orders, totalAmount, loading} = useSelector(
+		(state) => state.allOrders
+	);
+	const {users} = useSelector((state) => state.allUsers);
+
+	let outOfStock = 0;
+	products.forEach((product) => {
+		if (product.stock === 0) {
+			outOfStock += 1;
+		}
+	});
+
+	useEffect(() => {
+		dispatch(allOrders());
+		dispatch(getAdminProducts());
+    dispatch(allUsers())
+	}, [dispatch]);
+
 	return (
 		<Fragment>
 			<div className="row">
@@ -12,17 +37,21 @@ function Dashboard() {
 				</div>
 
 				<div className="col-12 col-md-10">
-					<h1 className="my-4">Panel de Control</h1>
+					<h1 className="my-4">Tablero de Información</h1>
+
+					{loading ? (
+						<i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+					) : (
 						<Fragment>
-							<MetaData title="Panel de Control"></MetaData>
+							<MetaData title={'Dashboard'} />
 
 							<div className="row pr-4">
 								<div className="col-xl-12 col-sm-12 mb-3">
 									<div className="card text-white bg-primary o-hidden h-100">
 										<div className="card-body">
 											<div className="text-center card-font-size">
-												Total Amount
-												<br /> <b>$</b>
+												Ventas Totales
+												<br /> <b>${totalAmount && totalAmount.toFixed(2)}</b>
 											</div>
 										</div>
 									</div>
@@ -34,14 +63,14 @@ function Dashboard() {
 									<div className="card text-white bg-success o-hidden h-100">
 										<div className="card-body">
 											<div className="text-center card-font-size">
-												Products
-												<br /> <b></b>
+												Productos
+												<br /> <b>{products && products.length}</b>
 											</div>
 										</div>
 										<Link
 											className="card-footer text-white clearfix small z-1"
-											to="/admin/products">
-											<span className="float-left">View Details</span>
+											to="/ProductList">
+											<span className="float-left">Ver Detalles</span>
 											<span className="float-right">
 												<i className="fa fa-angle-right"></i>
 											</span>
@@ -53,14 +82,14 @@ function Dashboard() {
 									<div className="card text-white bg-danger o-hidden h-100">
 										<div className="card-body">
 											<div className="text-center card-font-size">
-												Orders
-												<br /> <b></b>
+												Pedidos
+												<br /> <b>{orders && orders.length}</b>
 											</div>
 										</div>
 										<Link
 											className="card-footer text-white clearfix small z-1"
-											to="/admin/orders">
-											<span className="float-left">View Details</span>
+											to="/orderList">
+											<span className="float-left">Ver Detalles</span>
 											<span className="float-right">
 												<i className="fa fa-angle-right"></i>
 											</span>
@@ -72,14 +101,14 @@ function Dashboard() {
 									<div className="card text-white bg-info o-hidden h-100">
 										<div className="card-body">
 											<div className="text-center card-font-size">
-												Users
-												<br /> <b></b>
+												Usuarios
+												<br /> <b>{users && users.length}</b>
 											</div>
 										</div>
 										<Link
 											className="card-footer text-white clearfix small z-1"
 											to="/admin/users">
-											<span className="float-left">View Details</span>
+											<span className="float-left">Ver Detalles</span>
 											<span className="float-right">
 												<i className="fa fa-angle-right"></i>
 											</span>
@@ -91,14 +120,15 @@ function Dashboard() {
 									<div className="card text-white bg-warning o-hidden h-100">
 										<div className="card-body">
 											<div className="text-center card-font-size">
-												Out of Stock
-												<br /> <b>{}</b>
+												Agotados
+												<br /> <b>{outOfStock}</b>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</Fragment>
+					)}
 				</div>
 			</div>
 		</Fragment>

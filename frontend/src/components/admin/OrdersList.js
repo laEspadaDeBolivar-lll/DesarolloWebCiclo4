@@ -1,115 +1,139 @@
-import React, {Fragment} from 'react';
-import {Link} from 'react-router-dom';
+import {MDBDataTable} from 'mdbreact';
+import React, {Fragment, useEffect} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+
 import MetaData from '../layout/MetaData';
 import Sidebar from './Sidebar';
 
-function OrdersList() {
+import {useAlert} from 'react-alert';
+import {useDispatch, useSelector} from 'react-redux';
+import {allOrders, clearErrors, deleteOrder} from '../../actions/orderActions';
+import {DELETE_ORDER_RESET} from '../../constants/orderConstants';
+
+const OrdersList = () => {
+	const navigate = useNavigate();
+	const alert = useAlert();
+	const dispatch = useDispatch();
+
+	const {loading, error, orders} = useSelector((state) => state.allOrders);
+	const {isDeleted} = useSelector((state) => state.order);
+
+	useEffect(() => {
+		dispatch(allOrders());
+
+		if (error) {
+			alert.error(error);
+			dispatch(clearErrors());
+		}
+
+		if (isDeleted) {
+			alert.success('Orden eliminada correctamente');
+			navigate('/orderList');
+			dispatch({type: DELETE_ORDER_RESET});
+		}
+	}, [dispatch, alert, error, isDeleted]);
+
+	const deleteOrderHandler = (id) => {
+		dispatch(deleteOrder(id));
+	};
+
+	const setOrders = () => {
+		const data = {
+			columns: [
+				{
+					label: 'Fecha',
+					field: 'fecha',
+					sort: 'asc',
+				},
+				{
+					label: 'No. Orden',
+					field: 'id',
+					sort: 'asc',
+				},
+				{
+					label: '# Items',
+					field: 'numItems',
+					sort: 'asc',
+				},
+				{
+					label: 'Valor Total',
+					field: 'valorTotal',
+					sort: 'asc',
+				},
+				{
+					label: 'Estado',
+					field: 'estado',
+					sort: 'asc',
+				},
+				{
+					label: 'Acciones',
+					field: 'acciones',
+				},
+			],
+			rows: [],
+		};
+
+		orders.forEach((order) => {
+			var fecha = new Date(order.fechaCreacion).toLocaleDateString();
+			data.rows.push({
+				fecha: fecha,
+				id: order._id,
+				numItems: order.items.length,
+				valorTotal: `$${order.precioTotal}`,
+				estado:
+					order.estado && String(order.estado).includes('Entregado') ? (
+						<p style={{color: 'green'}}>{order.estado}</p>
+					) : (
+						<p style={{color: 'red'}}>{order.estado}</p>
+					),
+				acciones: (
+					<Fragment>
+						<Link
+							to={`/admin/order/${order._id}`}
+							className="btn btn-primary py-1 px-2">
+							<i className="fa fa-eye"></i>
+						</Link>
+						<button
+							className="btn btn-danger py-1 px-2 ml-2"
+							onClick={() => deleteOrderHandler(order._id)}>
+							<i className="fa fa-trash"></i>
+						</button>
+					</Fragment>
+				),
+			});
+		});
+
+		return data;
+	};
+
 	return (
 		<Fragment>
-			<MetaData title="Lista de Pedidos"></MetaData>
+			<MetaData title={'Todos los Pedidos'} />
 			<div className="row">
 				<div className="col-12 col-md-2">
 					<Sidebar />
 				</div>
+
 				<div className="col-12 col-md-10">
-					<h1 className="my-4">Lista de Pedidos</h1>
 					<Fragment>
-						<div className="row d-flex justify-content-around">
-							<div className="col-12 col-lg-12">
-								<div className="card shadow-lg">
-									<div className="card-header">
-										<h3 className="mb-0">Pedidos</h3>
-									</div>
-									<div className="card-body">
-										<div className="table-responsive">
-											<table className="table table-striped">
-												<thead className="thead-dark">
-													<tr>
-														<th scope="col">ID</th>
-														<th scope="col">No. de Pedido</th>
-														<th scope="col">No. de Items</th>
-														<th scope="col">Monto</th>
-														<th scope="col">Estado</th>
-														<th scope="col"></th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<th scope="row">1</th>
-														<td>ASD123</td>
-														<td>2</td>
-														<td>$400</td>
-														<td>
-															<p className="mb-0 text-danger">No Pagado</p>
-														</td>
-														<td>
-															<Link
-																to="/admin/order/1"
-																className="btn btn-primary py-1 px-2">
-																<i className="fa fa-eye"></i>
-															</Link>
-														</td>
-													</tr>
-													<tr>
-														<th scope="row">2</th>
-														<td>ASD123</td>
-														<td>2</td>
-														<td>$400</td>
-														<td>
-															<p className="mb-0 text-danger">No Pagado</p>
-														</td>
-														<td>
-															<Link
-																to="/admin/order/1"
-																className="btn btn-primary py-1 px-2">
-																<i className="fa fa-eye"></i>
-															</Link>
-														</td>
-													</tr>
-													<tr>
-														<th scope="row">3</th>
-														<td>ASD123</td>
-														<td>2</td>
-														<td>$400</td>
-														<td>
-															<p className="mb-0 text-danger">No Pagado</p>
-														</td>
-														<td>
-															<Link
-																to="/admin/order/1"
-																className="btn btn-primary py-1 px-2">
-																<i className="fa fa-eye"></i>
-															</Link>
-														</td>
-													</tr>
-													<tr>
-														<th scope="row">4</th>
-														<td>ASD123</td>
-														<td>2</td>
-														<td>$400</td>
-														<td>
-															<p className="mb-0 text-danger">No Pagado</p>
-														</td>
-														<td>
-															<Link
-																to="/admin/order/1"
-																className="btn btn-primary py-1 px-2">
-																<i className="fa fa-eye"></i>
-															</Link>
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						<h1 className="my-5">Todos los pedidos</h1>
+
+						{loading ? (
+							<i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+						) : (
+							<MDBDataTable
+								data={setOrders()}
+								className="px-3"
+								bordered
+								striped
+								hover
+							/>
+						)}
 					</Fragment>
 				</div>
 			</div>
 		</Fragment>
 	);
-}
+};
 
 export default OrdersList;
