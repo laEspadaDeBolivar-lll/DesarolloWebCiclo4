@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {allOrders} from '../../actions/orderActions';
 import {getAdminProducts} from '../../actions/productActions';
-import { allUsers } from '../../actions/userActions';
+import {allUsers} from '../../actions/userActions';
 import MetaData from '../layout/MetaData';
 import Sidebar from './Sidebar';
 
@@ -26,7 +26,7 @@ function Dashboard() {
 	useEffect(() => {
 		dispatch(allOrders());
 		dispatch(getAdminProducts());
-    dispatch(allUsers())
+		dispatch(allUsers());
 	}, [dispatch]);
 
 	return (
@@ -69,7 +69,7 @@ function Dashboard() {
 										</div>
 										<Link
 											className="card-footer text-white clearfix small z-1"
-											to="/ProductList">
+											to="/admin/products">
 											<span className="float-left">Ver Detalles</span>
 											<span className="float-right">
 												<i className="fa fa-angle-right"></i>
@@ -88,7 +88,7 @@ function Dashboard() {
 										</div>
 										<Link
 											className="card-footer text-white clearfix small z-1"
-											to="/orderList">
+											to="/admin/orders">
 											<span className="float-left">Ver Detalles</span>
 											<span className="float-right">
 												<i className="fa fa-angle-right"></i>
