@@ -5,9 +5,8 @@
 	"main": "server.js",
 	"type": "module",
   "engines": {
-    "node": "16.17.1",
+    "node": "16.x",
     "npm": "8.15.0"
-
   },
 	"scripts": {
 		"start": "node backend/server.js",
