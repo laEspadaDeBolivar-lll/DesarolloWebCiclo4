@@ -19,11 +19,11 @@ function NewProduct() {
 	const [imagenPreview, setImagenPreview] = useState([]);
 
 	const categorias = [
+		'Pasabocas',
 		'Cervezas',
 		'Cigarrillos',
 		'Energizantes',
 		'Gaseosas',
-		'Pasabocas',
 		'Licores',
 		'Otros',
 	];
