@@ -6,7 +6,7 @@ import ErrorHandler from '../utils/errorHandler.js';
 // Crear una nueva orden
 export const createOrder = catchAsyncErrors(async (req, res, next) => {
 	const {
-		Items,
+		items,
 		envioInfo,
 		precioItems,
 		precioImpuesto,
@@ -16,7 +16,7 @@ export const createOrder = catchAsyncErrors(async (req, res, next) => {
 	} = req.body;
 
 	const order = await orderModel.create({
-		Items,
+		items,
 		envioInfo,
 		precioItems,
 		precioImpuesto,

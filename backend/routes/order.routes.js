@@ -14,7 +14,7 @@ import {
 
 const router = Router();
 
-router.route('/order').post(isAuthenticatedUser, createOrder);
+router.route('/order/new').post(isAuthenticatedUser, createOrder);
 router.route('/order/:id').get(isAuthenticatedUser, getOrderById);
 router.route('/orders/me').get(isAuthenticatedUser, getMyOrders);
 

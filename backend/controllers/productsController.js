@@ -1,3 +1,4 @@
+import cloudinary from 'cloudinary';
 import catchAsyncErrors from '../middlewares/catchAsyncErrors.js';
 import productsModel from '../models/productsModel.js';
 import APIFeatures from '../utils/apiFeatures.js';
@@ -26,6 +27,16 @@ export const getProducts = catchAsyncErrors(async (req, res, next) => {
 	});
 });
 
+// Obtener todos los productos admin
+export const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
+	const products = await productsModel.find();
+
+	res.status(200).json({
+		success: true,
+		products,
+	});
+});
+
 // Obtener un producto por id
 export const getProductById = catchAsyncErrors(async (req, res, next) => {
 	try {
@@ -48,7 +59,26 @@ export const getProductById = catchAsyncErrors(async (req, res, next) => {
 
 // Creando productos
 export const newProduct = catchAsyncErrors(async (req, res, next) => {
-	// try {
+	let imagen = [];
+	if (typeof req.body.imagen === 'string') {
+		imagen.push(req.body.imagen);
+	} else {
+		imagen = req.body.imagen;
+	}
+
+	let imagenLink = [];
+
+	for (let i = 0; i < imagen.length; i++) {
+		const result = await cloudinary.v2.uploader.upload(imagen[i], {
+			folder: 'products',
+		});
+		imagenLink.push({
+			public_id: result.public_id,
+			url: result.secure_url,
+		});
+	}
+
+	req.body.imagen = imagenLink;
 	req.body.user = req.user.id;
 	const product = await productsModel.create(req.body);
 	res.status(201).json({
@@ -63,6 +93,35 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
 	if (!product) {
 		return next(new ErrorHandler('Producto no encontrado', 404));
 	}
+
+	let imagen = [];
+	if (typeof req.body.imagen === 'string') {
+		imagen.push(req.body.imagen);
+	} else {
+		imagen = req.body.imagen;
+	}
+
+	if (imagen !== undefined) {
+		for (let i = 0; i < imagen.length; i++) {
+			const result = await cloudinary.v2.uploader.destroy(
+				product.imagen[i].public_id
+			);
+		}
+
+		let imagenLink = [];
+
+		for (let i = 0; i < imagen.length; i++) {
+			const result = await cloudinary.v2.uploader.upload(imagen[i], {
+				folder: 'products',
+			});
+			imagenLink.push({
+				public_id: result.public_id,
+				url: result.secure_url,
+			});
+		}
+		req.body.imagen = imagenLink;
+	}
+
 	product = await productsModel.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
@@ -99,35 +158,40 @@ export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
 // Crear un nuevo review
 export const createProductReview = catchAsyncErrors(async (req, res, next) => {
-	const {rating, comment, productId} = req.body;
-	const review = {
-		user: req.user._id,
-		name: req.user.name,
+	const {rating, comentario, idProducto} = req.body;
+
+	const opinion = {
+		nombreCliente: req.user.nombre,
 		rating: Number(rating),
-		comment,
+		comentario,
 	};
-	const product = await productsModel.findById(productId);
+
+	const product = await productsModel.findById(idProducto);
+
 	const isReviewed = product.opiniones.find(
-		(item) => item.user.toString() === req.user._id.toString()
+		(item) => item.nombreCliente === req.user.nombre
 	);
+
 	if (isReviewed) {
-		product.opiniones.forEach((review) => {
-			if (review.user.toString() === req.user._id.toString()) {
-				review.comment = comment;
-				review.rating = rating;
+		product.opiniones.forEach((opinion) => {
+			if (opinion.nombreCliente === req.user.nombre) {
+				(opinion.comentario = comentario), (opinion.rating = rating);
 			}
 		});
 	} else {
-		product.opiniones.push(review);
-		product.calificacion = product.opiniones.length;
+		product.opiniones.push(opinion);
+		product.numCalificaciones = product.opiniones.length;
 	}
-	product.ratings =
-		product.opiniones.reduce((acc, item) => item.rating + acc, 0) /
+
+	product.calificacion =
+		product.opiniones.reduce((acc, opinion) => opinion.rating + acc, 0) /
 		product.opiniones.length;
+
 	await product.save({validateBeforeSave: false});
+
 	res.status(200).json({
 		success: true,
-		comment: product.opiniones.comment,
+		message: 'Hemos opinado correctamente',
 	});
 });
 

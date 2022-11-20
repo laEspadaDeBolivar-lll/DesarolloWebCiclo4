@@ -1,14 +1,20 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import {useAlert} from 'react-alert';
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
-import {clearErrors, newProduct} from '../../actions/productActions';
-import {NEW_PRODUCT_RESET} from '../../constants/productConstants';
+import {useNavigate, useParams} from 'react-router-dom';
+import {
+	clearErrors,
+	getProductDetails,
+	updateProduct,
+} from '../../actions/productActions';
+import {UPDATE_PRODUCT_RESET} from '../../constants/productConstants';
 import MetaData from '../layout/MetaData';
 import Sidebar from './Sidebar';
 
-function NewProduct() {
+export const UpdateProduct = () => {
 	const navigate = useNavigate();
+	const params = useParams();
+
 	const [nombre, setNombre] = useState('');
 	const [precio, setPrecio] = useState(0);
 	const [descripcion, setDescripcion] = useState('');
@@ -17,6 +23,7 @@ function NewProduct() {
 	const [vendedor, setVendedor] = useState('');
 	const [imagen, setImagen] = useState([]);
 	const [imagenPreview, setImagenPreview] = useState([]);
+	const [oldImagen, setOldImagen] = useState([]);
 
 	const categorias = [
 		'Cervezas',
@@ -31,20 +38,42 @@ function NewProduct() {
 	const alert = useAlert();
 	const dispatch = useDispatch();
 
-	const {loading, error, success} = useSelector((state) => state.newProduct);
+	const {
+		loading,
+		isUpdated,
+		error: updateError,
+	} = useSelector((state) => state.product);
+	const {error, product} = useSelector((state) => state.productDetails);
+	const productId = params.id;
 
 	useEffect(() => {
+		if (product && product._id !== productId) {
+			dispatch(getProductDetails(productId));
+		} else {
+			setNombre(product.nombre);
+			setPrecio(product.precio);
+			setDescripcion(product.descripcion);
+			setCategoria(product.categoria);
+			setStock(product.stock);
+			setVendedor(product.vendedor);
+			setOldImagen(product.imagen);
+		}
 		if (error) {
 			alert.error(error);
 			dispatch(clearErrors());
 		}
 
-		if (success) {
-			navigate('/admin/products');
-			alert.success('Producto creado con éxito');
-			dispatch({type: NEW_PRODUCT_RESET});
+		if (updateError) {
+			alert.error(updateError);
+			dispatch(clearErrors());
 		}
-	}, [dispatch, alert, error, success]);
+
+		if (isUpdated) {
+			alert.success('Producto actualizado con éxito');
+			navigate('/admin/products');
+			dispatch({type: UPDATE_PRODUCT_RESET});
+		}
+	}, [dispatch, alert, error, updateError, isUpdated, productId]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -61,7 +90,7 @@ function NewProduct() {
 			formData.append('imagen', img);
 		});
 
-		dispatch(newProduct(formData));
+		dispatch(updateProduct(product._id, formData));
 	};
 
 	const onChange = (e) => {
@@ -69,6 +98,7 @@ function NewProduct() {
 
 		setImagenPreview([]);
 		setImagen([]);
+		setOldImagen([]);
 
 		files.forEach((file) => {
 			const reader = new FileReader();
@@ -86,7 +116,7 @@ function NewProduct() {
 
 	return (
 		<Fragment>
-			<MetaData title={'Nuevo Producto'} />
+			<MetaData title={'Actualizar producto'} />
 			<div className="row">
 				<div className="col-12 col-md-2">
 					<Sidebar />
@@ -99,7 +129,7 @@ function NewProduct() {
 								className="shadow-lg"
 								onSubmit={submitHandler}
 								encType="multipart/form-data">
-								<h1 className="mb-4">Nuevo Producto</h1>
+								<h1 className="mb-4">Actualizar Producto</h1>
 
 								<div className="form-group">
 									<label htmlFor="name_field">Nombre</label>
@@ -124,7 +154,7 @@ function NewProduct() {
 								</div>
 
 								<div className="form-group">
-									<label htmlFor="description_field">Descripción</label>
+									<label htmlFor="description_field">Descripcion</label>
 									<textarea
 										className="form-control"
 										id="description_field"
@@ -186,11 +216,23 @@ function NewProduct() {
 										</label>
 									</div>
 
+									{oldImagen &&
+										oldImagen.map((img) => (
+											<img
+												key={img}
+												src={img.url}
+												alt={img.url}
+												className="mt-3 mr-2"
+												width="55"
+												height="52"
+											/>
+										))}
+
 									{imagenPreview.map((img) => (
 										<img
 											src={img}
 											key={img}
-											alt="Images Preview"
+											alt="Vista Previa"
 											className="mt-3 mr-2"
 											width="55"
 											height="52"
@@ -203,7 +245,7 @@ function NewProduct() {
 									type="submit"
 									className="btn btn-block py-3"
 									disabled={loading ? true : false}>
-									CREATE
+									ACTUALIZAR
 								</button>
 							</form>
 						</div>
@@ -212,6 +254,4 @@ function NewProduct() {
 			</div>
 		</Fragment>
 	);
-}
-
-export default NewProduct;
+};
